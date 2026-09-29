@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: codejudge
+          POSTGRES_PASSWORD: codejudge
+          POSTGRES_DB: codejudge
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U codejudge -d codejudge"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+
+      - name: Install test dependencies
+        run: pip install pytest pytest-asyncio pytest-cov arq fakeredis
+
+      - name: Run full test suite with coverage
+        run: python -m pytest -m "not slow and not real_docker" --cov=app --cov-report=term-missing
+
+      - name: Verify backend has no test/debug code
+        run: |
+          if grep -rn "print(" backend/app --include="*.py"; then
+            echo "print() calls found in production code" && exit 1
+          fi
+          if grep -rn "dummy_job\|trigger-dummy" backend/app --include="*.py"; then
+            echo "debug endpoints/workers found" && exit 1
+          fi
+          if [ -d backend/tests ]; then
+            echo "tests must live in the top-level tests/ directory" && exit 1
+          fi
+        shell: bash

@@ -1,0 +1,24 @@
+{
+  "problems": [
+    {
+      "title": "Sum of Two Numbers",
+      "statement": "Read two integers a and b from stdin and print their sum.",
+      "constraints": "a, b in [-10^9, 10^9].",
+      "difficulty": "easy",
+      "test_cases": [
+        {"input": "2 3", "expected_output": "5", "is_hidden": false, "weight": 1.0},
+        {"input": "-5 5", "expected_output": "0", "is_hidden": false, "weight": 1.0},
+        {"input": "1000000000 1", "expected_output": "1000000001", "is_hidden": true, "weight": 1.0}
+      ]
+    },
+    {
+      "title": "Reverse a String",
+      "statement": "Read a string and print it reversed.",
+      "constraints": "Length <= 100.",
+      "difficulty": "medium",
+      "test_cases": [
+        {"input": "abc", "expected_output": "cba", "is_hidden": false, "weight": 1.0}
+      ]
+    }
+  ]
+}

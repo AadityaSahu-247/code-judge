@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Inter', system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+}
+
+/* Frosted glass utilities defined using Tailwind v4 @utility directive */
+@utility glass-panel {
+  background-color: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@utility glass-panel-large {
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@utility glass-border {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+@utility glass-border-strong {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+@utility glass-badge {
+  border-left: 2px solid #ffffff;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Reveal transition styles */
+@utility reveal-element {
+  will-change: transform, opacity;
+  transition: transform 700ms ease-out, opacity 700ms ease-out;
+}
